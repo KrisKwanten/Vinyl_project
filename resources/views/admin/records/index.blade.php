@@ -1,4 +1,7 @@
-<h1>Records</h1>
+<x-vinylshop-layout>
+    <x-slot name="title">The Vinyl Shop: records</x-slot>
+    <x-slot name="subtitle">Records</x-slot>
+
 
 <ul>
     <?php
@@ -8,3 +11,4 @@
     }
     ?>
 </ul>
+</x-vinylshop-layout>
