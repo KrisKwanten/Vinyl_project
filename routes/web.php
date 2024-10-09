@@ -17,7 +17,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             'records' => $records
         ]);
     })->name('records');
+    Route::view('download_covers', 'admin.download_covers')->name('download_covers');
 });
+Route::view('playground', 'playground')->name('playground');
+Route::view('under-construction', 'under-construction')->name('under-construction');
+
 
 Route::middleware([
     'auth:sanctum',
