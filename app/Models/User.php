@@ -23,11 +23,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['name', 'email', 'password', 'active', 'admin',];
+
+    // Relationship between models
+    public function orders()
+    {
+        return $this->hasMany(Order::class);  // a use has many orders
+    }
 
     /**
      * The attributes that should be hidden for serialization.
