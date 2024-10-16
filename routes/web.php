@@ -1,22 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Demo;
 
 Route::view('/', 'home')->name('home');
 Route::view('contact', 'contact')->name('contact');
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::redirect('/', '/admin/records');
-    Route::get('records', function (){
-        Route::redirect('/', '/admin/records');
-        $records = [
-            'Queen - Greatest Hits',
-            'The Rolling Stones - Sticky Fingers',
-            'The Beatles - Abbeygit Road'
-        ];
-        return view('admin.records.index', [
-            'records' => $records
-        ]);
-    })->name('records');
+    Route::get('records', Demo::class)->name('records');
+//    Route::get('records', function (){
+//        Route::redirect('/', '/admin/records');
+//        $records = [
+//            'Queen - Greatest Hits',
+//            'The Rolling Stones - Sticky Fingers',
+//            'The Beatles - Abbeygit Road'
+//        ];
+//        return view('admin.records.index', [
+//            'records' => $records
+//        ]);
+//    })->name('records');
     Route::view('download_covers', 'admin.download_covers')->name('download_covers');
 });
 Route::view('playground', 'playground')->name('playground');
