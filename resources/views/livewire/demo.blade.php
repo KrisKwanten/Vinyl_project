@@ -1,9 +1,9 @@
 <div>
     <h2>Records</h2>
     <div class="my-4">{{ $records->links() }}</div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8 ">
         @foreach ($records as $record)
-            <div class="flex space-x-4 bg-white shadow-md rounded-lg p-4 ">
+            <div class="flex space-x-4 shadow-md rounded-lg p-4 {{ $record->stock <= 0 ? 'bg-red-200': 'bg-white' }}">
                 <div class="inline flex-none w-48">
                     <img src="{{ $record->cover }}" alt="">
                 </div>
@@ -12,12 +12,22 @@
                     <p class="italic text-right pb-2 mb-2 border-b border-gray-300">{{ $record->title }}</p>
                     <p>{{ $record->genre_name }}</p>
                     <p>Price: {{ $record->price_euro }}</p>
+
                     @if($record->stock > 0)
                         <p>Stock: {{ $record->stock }}</p>
                     @else
 
                         <p class="absolute bottom-4 right-0 -rotate-12 font-bold text-red-500">SOLD OUT</p>
                     @endif
+                        <?php
+                        $mb_id = $record->mb_id;
+                        $url = "https://listenbrainz.org/player/release/" . $mb_id;
+                        ?>
+
+
+                    <a href="<?= $url ?> " class="inline-flex p-0">
+                        <x-si-musicbrainz class="w-6 h-6 text-red-600 mt-5"/>
+                    </a>
                 </div>
             </div>
         @endforeach
