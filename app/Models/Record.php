@@ -45,6 +45,12 @@ class Record extends Model
     {
         return $query->where('price', '<=', $price);
     }
+    public function scopeSearchTitleOrArtist($query, $search = '%')
+    {
+        return $query->where('title', 'like', "%{$search}%")
+            ->orWhere('artist', 'like', "%{$search}%");
+    }
+
 
     protected $appends = ['genre_name', 'price_euro', 'cover'];
     // Relationship between models

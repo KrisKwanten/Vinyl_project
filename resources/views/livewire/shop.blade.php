@@ -1,4 +1,5 @@
 <div>
+
     {{-- show preloader while fetching data in the background --}}
     <div class="hidden fixed top-8 left-1/2 -translate-x-1/2 z-50 animate-pulse"
          wire:loading>
@@ -8,6 +9,49 @@
     </div>
     <x-tmk.livewirelog/>
     {{-- filter section: artist or title, genre, max price and records per page --}}
+    <div class="grid grid-cols-10 gap-4">
+        <div class="col-span-10 md:col-span-5 lg:col-span-3">
+            <x-label for="filter" value="Filter"/>
+            <x-tmk.form.search
+                id="filter"
+                wire:model.live.debounce.500ms="filter"
+                placeholder="Filter Artist Or Record"/>
+        </div>
+        <div class="col-span-5 md:col-span-2 lg:col-span-2">
+            <x-label for="genre" value="Genre"/>
+            <x-tmk.form.select id="genre"
+                               wire:model.live="genre"
+                               class="block mt-1 w-full">
+                <option value="%">All Genres</option>
+                @foreach($allGenres as $g)
+                    <option value="{{ $g->id }}">
+                        {{ $g->name }} ({{$g->records_count}})
+                    </option>
+                @endforeach
+            </x-tmk.form.select>
+        </div>
+        <div class="col-span-5 md:col-span-3 lg:col-span-2">
+            <x-label for="perPage" value="Records per page"/>
+            <x-tmk.form.select id="perPage"
+                               wire:model.live="perPage"
+                               class="block mt-1 w-full">
+                @foreach ([3,6,9,12,15,18,24] as $value)
+                    <option value="{{ $value }}">{{ $value }}</option>
+                @endforeach
+            </x-tmk.form.select>
+        </div>
+        <div class="col-span-10 lg:col-span-3">
+            <x-label for="price">Price &le;
+                <output id="priceFilter" name="priceFilter">{{ $price }}</output>
+            </x-label>
+            <x-input type="range" id="price" name="price"
+                     wire:model.live="price"
+                     min="{{ $priceMin }}"
+                     max="{{ $priceMax }}"
+                     oninput="priceFilter.value = price.value"
+                     class="block mt-4 w-full h-2 bg-indigo-100 accent-indigo-600 appearance-none"/>
+        </div>
+    </div>
     <x-dialog-modal wire:model="showModal">
         <x-slot name="title">   <div class="flex items-center border-b border-gray-300 pb-2 gap-4">
                 <img class="size-20"
@@ -81,6 +125,14 @@
 
     </div>
     <div class="my-4">{{ $records->links() }}</div>
+    @if($records->isEmpty())
+        <x-tmk.alert type="danger" class="w-full">
+            Can't find any artist or album with <b>'{{ $filter }}'</b> for the genre <b>'{{$genreName}}'</b> and a price of &le; <b>&euro; {{ $price }}</b>
+        </x-tmk.alert>
+    @endif
+
+
 
     {{-- Detail section --}}
+
 </div>
