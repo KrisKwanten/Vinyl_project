@@ -7,7 +7,7 @@ use App\Livewire\Shop;
 Route::view('/', 'home')->name('home');
 Route::get('shop', Shop::class)->name('shop');
 Route::view('contact', 'contact')->name('contact');
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::redirect('/', '/admin/records');
     Route::get('records', Demo::class)->name('records');
 //    Route::get('records', function (){
@@ -21,6 +21,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 //            'records' => $records
 //        ]);
 //    })->name('records');
+
     Route::view('download_covers', 'admin.download_covers')->name('download_covers');
 });
 Route::view('playground', 'playground')->name('playground');
