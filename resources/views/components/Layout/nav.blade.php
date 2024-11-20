@@ -34,16 +34,16 @@
         <x-dropdown align="right" width="48">
             {{-- avatar --}}
             <x-slot name="trigger">
-                <img class="rounded-full h-8 w-8 cursor-pointer"
-                     src="https://ui-avatars.com/api/?name={{  urlencode(auth()->user()->name) }}"
-                     alt="{{ auth()->user()->name }}">
+                @livewire('partials.avatar')
             </x-slot>
             <x-slot name="content">
                 {{-- all users --}}
-                <div class="block px-4 py-2 text-xs text-gray-400">{{ auth()->user()->name }}</div>
+
+                @livewire('partials.name')
                 <x-dropdown-link href="{{ route('dashboard') }}">Dashboard</x-dropdown-link>
                 <x-dropdown-link href="{{ route('profile.show') }}">Update Profile</x-dropdown-link>
                 <x-dropdown-link href="{{ route('under-construction') }}">Order history</x-dropdown-link>
+
                 <div class="border-t border-gray-100"></div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -51,12 +51,14 @@
                 </form>
                 <div class="border-t border-gray-100"></div>
                 {{-- admins only --}}
+                @if(auth()->user()->admin)
                 <div class="block px-4 py-2 text-xs text-gray-400">Admin</div>
-                <x-dropdown-link href="{{ route('under-construction') }}">Genres</x-dropdown-link>
+                    <x-dropdown-link href="{{ route('admin.genres') }}">Genres</x-dropdown-link>
                 <x-dropdown-link href="{{ route('admin.records') }}">Records</x-dropdown-link>
                 <x-dropdown-link href="{{ route('under-construction') }}">Covers</x-dropdown-link>
                 <x-dropdown-link href="{{ route('under-construction') }}">Users</x-dropdown-link>
                 <x-dropdown-link href="{{ route('under-construction') }}">Orders</x-dropdown-link>
+                @endif
             </x-slot>
         </x-dropdown>
             @endauth
